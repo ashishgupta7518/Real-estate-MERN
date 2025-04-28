@@ -1,14 +1,16 @@
 import { set } from 'mongoose';
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { updateUserStart, updateUserFailure, updateUserSuccess } from '../redux/user/userSlice';
+import { updateUserStart, updateUserFailure, updateUserSuccess, deleteUserStart, deleteUserFailure } from '../redux/user/userSlice';
 import { useDispatch } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 export default function Profile() {
   const notify = () => toast.success('User updated successfully!');
   const notifyError = () => toast.error("Error updating user!");
   const notifyErrorImage = () => toast.error("Error uploading image!");
+  const notifyDelete = () => toast.success('Account deleted successfully!');
   const fileRef = useRef(null);
   const { currentUser, loading, error } = useSelector((state) => state.user);
   const [fileUploadError, setfileUploadError] = useState(false);
@@ -20,10 +22,10 @@ export default function Profile() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log('Updated Form Data:', formDatas);
+
   }, [formDatas]);
 
-
+  const navigator = useNavigate();
 
 
 
@@ -114,6 +116,43 @@ export default function Profile() {
   }
 
 
+  const handleDeleteuser = async () => {
+    dispatch(deleteUserStart());
+    try {
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const data = await res.json();
+      if (data.success === false) {
+        notifyError();
+        dispatch(deleteUserFailure(data.message));
+        return;
+      }
+      notifyDelete();
+      
+
+
+      setTimeout(() => {
+        navigator('/sign-up');
+        dispatch(updateUserSuccess(null));
+
+      }, 2000)
+
+
+
+
+    } catch (error) {
+      notifyError();
+
+      dispatch(deleteUserFailure(error.message));
+    }
+  }
+
+
 
   return (
     <div className='p-3 max-w-lg mx-auto'>
@@ -162,7 +201,7 @@ export default function Profile() {
       </form>
 
       <div className='flex justify-between mt-5'>
-        <span className='text-red-700 cursor-pointer'>Delete account</span>
+        <span className='text-red-700 cursor-pointer' onClick={handleDeleteuser}>Delete account</span>
         <span className='text-red-700 cursor-pointer'>Sign out</span>
       </div>
 
