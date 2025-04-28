@@ -1,7 +1,7 @@
 import { set } from 'mongoose';
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { updateUserStart, updateUserFailure, updateUserSuccess, deleteUserStart, deleteUserFailure } from '../redux/user/userSlice';
+import { updateUserStart, updateUserFailure, updateUserSuccess, deleteUserStart, deleteUserFailure, signoutUserStart, signoutUserSuccess } from '../redux/user/userSlice';
 import { useDispatch } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +11,7 @@ export default function Profile() {
   const notifyError = () => toast.error("Error updating user!");
   const notifyErrorImage = () => toast.error("Error uploading image!");
   const notifyDelete = () => toast.success('Account deleted successfully!');
+  const notifySignout = () => toast.success('Sign out successfully!');
   const fileRef = useRef(null);
   const { currentUser, loading, error } = useSelector((state) => state.user);
   const [fileUploadError, setfileUploadError] = useState(false);
@@ -133,7 +134,7 @@ export default function Profile() {
         return;
       }
       notifyDelete();
-      
+
 
 
       setTimeout(() => {
@@ -149,6 +150,39 @@ export default function Profile() {
       notifyError();
 
       dispatch(deleteUserFailure(error.message));
+    }
+  }
+
+  const HandleSignOutUser = async () => {
+
+    try {
+      dispatch(signoutUserStart());
+      const res = await fetch('/api/auth/signout', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const data = await res.json();
+      if (data.success === false) {
+        notifyError();
+        return;
+      }
+      notifySignout();
+
+
+      setTimeout(() => {
+        navigator('/sign-up');
+        dispatch(signoutUserSuccess())
+
+
+      }, 2000)
+
+    } catch (error) {
+      notifyError();
+      dispatch(signoutUserFailure(error.message));
+
     }
   }
 
@@ -202,7 +236,7 @@ export default function Profile() {
 
       <div className='flex justify-between mt-5'>
         <span className='text-red-700 cursor-pointer' onClick={handleDeleteuser}>Delete account</span>
-        <span className='text-red-700 cursor-pointer'>Sign out</span>
+        <span className='text-red-700 cursor-pointer ' onClick={HandleSignOutUser}>Sign out</span>
       </div>
 
       {error && <span className='text-red-700 text-center mt-3'>{error}</span>}
