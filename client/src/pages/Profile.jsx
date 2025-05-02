@@ -5,6 +5,7 @@ import { updateUserStart, updateUserFailure, updateUserSuccess, deleteUserStart,
 import { useDispatch } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export default function Profile() {
   const notify = () => toast.success('User updated successfully!');
@@ -232,6 +233,11 @@ export default function Profile() {
         <button disabled={loading} className='bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80'>
           {loading ? 'Loading...' : 'Update'}
         </button>
+
+
+        <Link className='bg-green-700 text-white p-3 rounded-lg uppercase text-center hover:opacity-95' to={"/create-listing"}>
+          Create listing
+        </Link>
       </form>
 
       <div className='flex justify-between mt-5'>
