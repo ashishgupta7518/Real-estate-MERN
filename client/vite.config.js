@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://real-estate-mern-1-xtpg.onrender.com',
+        target: 'http://localhost:3000',
 
         secure: false,
       },
