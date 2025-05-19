@@ -18,10 +18,7 @@ mongoose
     console.log(err);
   });
 
-app.use(cors({
-  origin: 'http://localhost:5173', // or '*' if needed for dev
-  credentials: true
-}));
+
 
 
 const app = express();
@@ -37,6 +34,11 @@ app.listen(3000, () => {
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/listing', listingRouter);
+
+app.use(cors({
+  origin: 'http://localhost:5173', // or '*' if needed for dev
+  credentials: true
+}));
 
 
 
