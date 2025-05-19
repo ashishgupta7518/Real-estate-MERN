@@ -9,9 +9,11 @@ export default function Contact({ listing }) {
     };
 
     useEffect(() => {
+
+        const BASE_URL = import.meta.env.VITE_BACKEND_URL;
         const fetchLandlord = async () => {
             try {
-                const res = await fetch(`/api/user/${listing.userRef}`);
+                const res = await fetch(`${BASE_URL}/api/user/${listing.userRef}`);
                 const data = await res.json();
                 setLandlord(data);
             } catch (error) {

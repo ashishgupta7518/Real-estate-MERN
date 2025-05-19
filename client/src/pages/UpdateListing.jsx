@@ -5,6 +5,9 @@ import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
 export default function UpdateListing() {
+
+    const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+
     const { currentUser } = useSelector((state) => state.user);
     const navigator = useNavigate();
     const notify = () => toast.success('Image uploaded successfully!');
@@ -40,7 +43,7 @@ export default function UpdateListing() {
         const fetchListing = async () => {
             const listingId = params.listingId;
             try {
-                const res = await fetch(`/api/listing/get/${listingId}`);
+                const res = await fetch(`${BASE_URL}/api/listing/get/${listingId}`);
                 const data = await res.json();
                 if (data.success === false) {
                     setError(data.message);
@@ -174,7 +177,7 @@ export default function UpdateListing() {
         }
 
         try {
-            const res = await fetch(`/api/listing/update/${params.listingId}`, {
+            const res = await fetch(`${BASE_URL}/api/listing/update/${params.listingId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -8,6 +8,9 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 export default function Profile() {
+
+      const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+
   const notify = () => toast.success('User updated successfully!');
   const notifyError = () => toast.error("Error updating user!");
   const notifyErrorImage = () => toast.error("Error uploading image!");
@@ -90,7 +93,7 @@ export default function Profile() {
     try {
       dispatch(updateUserStart());
 
-      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+      const res = await fetch(`${BASE_URL}/api/user/update/${currentUser._id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -122,7 +125,7 @@ export default function Profile() {
   const handleDeleteuser = async () => {
     dispatch(deleteUserStart());
     try {
-      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+      const res = await fetch(`${BASE_URL}/api/user/delete/${currentUser._id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -159,7 +162,7 @@ export default function Profile() {
 
     try {
       dispatch(signoutUserStart());
-      const res = await fetch('/api/auth/signout', {
+      const res = await fetch(`${BASE_URL}/api/auth/signout`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -191,7 +194,7 @@ export default function Profile() {
 
   const handleShowListing = async () => {
     try {
-      const res = await fetch(`/api/user/listings/${currentUser._id}`, {
+      const res = await fetch(`${BASE_URL}/api/user/listings/${currentUser._id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -219,7 +222,7 @@ export default function Profile() {
   const handleListingDelete = async (e) => {
     const listingId = e;
     try {
-      const res = await fetch(`/api/listing/delete/${listingId}`, {
+      const res = await fetch(`${BASE_URL}/api/listing/delete/${listingId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

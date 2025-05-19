@@ -28,12 +28,14 @@ export default function Listing() {
     const [contact, setContact] = useState(false);
     const params = useParams();
     const { currentUser } = useSelector((state) => state.user);
+        const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+
 
     useEffect(() => {
         const fetchListing = async () => {
             try {
                 setLoading(true);
-                const res = await fetch(`/api/listing/get/${params.listingId}`);
+                const res = await fetch(`${BASE_URL}/api/listing/get/${params.listingId}`);
                 const data = await res.json();
                 if (data.success === false) {
                     setError(true);
