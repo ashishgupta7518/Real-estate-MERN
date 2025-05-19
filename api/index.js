@@ -7,6 +7,7 @@ import listingRouter from './routes/listing.route.js';
 import cookieParser from 'cookie-parser';
 import path from 'path';
 import cors from 'cors';
+
 dotenv.config();
 
 mongoose
@@ -18,30 +19,23 @@ mongoose
     console.log(err);
   });
 
-
-
-
 const app = express();
 
-app.use(express.json());
+// ✅ Apply CORS before any routes
+app.use(cors({
+  origin: 'http://localhost:5173', // or use ['http://localhost:5173', 'your-frontend-domain']
+  credentials: true
+}));
 
+app.use(express.json());
 app.use(cookieParser());
 
-app.listen(3000, () => {
-  console.log('Server is running on port 3000');
-});
-
+// ✅ Now define routes AFTER middleware
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/listing', listingRouter);
 
-app.use(cors({
-  origin: 'http://localhost:5173', // or '*' if needed for dev
-  credentials: true
-}));
-
-
-
+// Error handling middleware
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || 'Internal Server Error';
@@ -50,4 +44,9 @@ app.use((err, req, res, next) => {
     statusCode,
     message,
   });
+});
+
+// Listen last
+app.listen(3000, () => {
+  console.log('Server is running on port 3000');
 });
