@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 
 export default function Profile() {
 
-      const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
   const notify = () => toast.success('User updated successfully!');
   const notifyError = () => toast.error("Error updating user!");
@@ -97,10 +97,11 @@ export default function Profile() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-
         },
+        credentials: 'include', // ✅ this allows cookies to be sent
         body: JSON.stringify(formDatas),
       });
+
 
       const data = await res.json();
       if (data.success === false) {
