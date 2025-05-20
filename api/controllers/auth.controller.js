@@ -4,34 +4,39 @@ import { errorHandler } from "../utils/error.js";
 import jwt from "jsonwebtoken";
 
 export const signup = async (req, res, next) => {
-    const { username, email, password } = req.body;
+  const { username, email, password } = req.body;
 
-    const hashedPassword = bcryptjs.hashSync(password, 10);
+  const hashedPassword = bcryptjs.hashSync(password, 10);
 
-    const newUser = new User({
-        username,
-        email,
-        password: hashedPassword,
-    });
+  const newUser = new User({
+    username,
+    email,
+    password: hashedPassword,
+  });
 
-    try {
-        await newUser.save()
+  try {
+    await newUser.save();
 
-        res.status(201).json({
-            message: "User created successfully"
-        });
+    // ✅ Find the user again (optional, or use `newUser`)
+    const user = await User.findOne({ email });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    const { password: pass, ...rest } = user._doc;
 
-    } catch (error) {
-        next(error);
+    // ✅ Set cookie after signup
+    res
+      .cookie("access_token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
+      })
+      .status(201)
+      .json(rest);
 
-    }
+  } catch (error) {
+    next(error);
+  }
+};
 
-
-
-
-    console.log(req.body);
-
-}
 
 
 
@@ -57,12 +62,12 @@ export const signin = async (req, res, next) => {
         const { password: pass, ...rest } = validUser._doc;
         res.cookie("access_token", token, {
             httpOnly: true,
-  secure: true,          // must be true on HTTPS (e.g., Render)
-  sameSite: 'None',
+            secure: true,          // must be true on HTTPS (e.g., Render)
+            sameSite: 'None',
         }).status(200).json(rest);
 
 
-        
+
 
 
     } catch (error) {
@@ -87,8 +92,8 @@ export const google = async (req, res, next) => {
             const { password: pass, ...rest } = user._doc;
             res.cookie("access_token", token, {
                 httpOnly: true,
-  secure: true,          // must be true on HTTPS (e.g., Render)
-  sameSite: 'None',
+                secure: true,          // must be true on HTTPS (e.g., Render)
+                sameSite: 'None',
             }).status(200).json(rest);
 
         } else {
@@ -106,15 +111,15 @@ export const google = async (req, res, next) => {
             });
 
             await newUser.save()
-            
 
-           
+
+
             const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
             const { password: pass, ...rest } = newUser._doc;
             res.cookie("access_token", token, {
                 httpOnly: true,
-  secure: true,          // must be true on HTTPS (e.g., Render)
-  sameSite: 'None',
+                secure: true,          // must be true on HTTPS (e.g., Render)
+                sameSite: 'None',
             }).status(200).json(rest);
 
         }
@@ -134,10 +139,10 @@ export const signOut = async (req, res) => {
 
     try {
         res.clearCookie('access_token').status(200).json("User has been logged out!")
-        
+
     } catch (error) {
         return next(error);
-        
+
     }
-    
+
 }
