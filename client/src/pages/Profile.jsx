@@ -131,6 +131,7 @@ export default function Profile() {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include', // ✅ this allows cookies to be sent
       });
 
       const data = await res.json();
@@ -200,6 +201,7 @@ export default function Profile() {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include', // ✅ this allows cookies to be sent
       });
 
       const data = await res.json();
@@ -228,6 +230,7 @@ export default function Profile() {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include', // ✅ this allows cookies to be sent
       });
 
       const data = await res.json();

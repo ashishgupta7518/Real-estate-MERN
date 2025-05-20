@@ -156,8 +156,10 @@ export default function CreateListing() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include', // <-- This adds credentials (cookies, HTTP auth)
                 body: JSON.stringify({ ...formData, userRef: currentUser._id }),
             });
+
 
             const data = await res.json();
             if (data.success === false) {
