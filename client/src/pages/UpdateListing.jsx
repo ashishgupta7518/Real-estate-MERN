@@ -179,11 +179,13 @@ export default function UpdateListing() {
         try {
             const res = await fetch(`${BASE_URL}/api/listing/update/${params.listingId}`, {
                 method: 'POST',
+                credentials: 'include', // 🔑 this sends the cookie!
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ ...formData, userRef: currentUser._id }),
             });
+
 
             const data = await res.json();
             if (data.success === false) {
