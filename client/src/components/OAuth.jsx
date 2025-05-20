@@ -13,7 +13,7 @@ export default function OAuth() {
 
     const handleGoogleClick = async () => {
         try {
-            
+
 
             const provider = new GoogleAuthProvider()
             const auth = getAuth(app)
@@ -23,9 +23,10 @@ export default function OAuth() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
+                credentials: 'include',
                 body: JSON.stringify({ name: result.user.displayName, email: result.user.email, photo: result.user.photoURL })
             })
-            
+
 
             const data = await res.json()
             dispatch(signinSuccess(data))
@@ -33,7 +34,7 @@ export default function OAuth() {
             console.log(data)
 
 
-            
+
 
 
 
