@@ -94,9 +94,11 @@ export default function Profile() {
       dispatch(updateUserStart());
 
       const res = await fetch(`${BASE_URL}/api/user/update/${currentUser._id}`, {
-        method: 'PUT',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+
         },
         credentials: 'include', // ✅ this allows cookies to be sent
         body: JSON.stringify(formDatas),
