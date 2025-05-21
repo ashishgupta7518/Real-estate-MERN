@@ -4,37 +4,37 @@ import { errorHandler } from "../utils/error.js";
 import jwt from "jsonwebtoken";
 
 export const signup = async (req, res, next) => {
-  const { username, email, password } = req.body;
+    const { username, email, password } = req.body;
 
-  const hashedPassword = bcryptjs.hashSync(password, 10);
+    const hashedPassword = bcryptjs.hashSync(password, 10);
 
-  const newUser = new User({
-    username,
-    email,
-    password: hashedPassword,
-  });
+    const newUser = new User({
+        username,
+        email,
+        password: hashedPassword,
+    });
 
-  try {
-    await newUser.save();
+    try {
+        await newUser.save();
 
-    // ✅ Find the user again (optional, or use `newUser`)
-    const user = await User.findOne({ email });
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-    const { password: pass, ...rest } = user._doc;
+        // ✅ Find the user again (optional, or use `newUser`)
+        const user = await User.findOne({ email });
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+        const { password: pass, ...rest } = user._doc;
 
-    // ✅ Set cookie after signup
-    res
-      .cookie("access_token", token, {
-        httpOnly: true,
-        secure: true,
-        sameSite: "None",
-      })
-      .status(201)
-      .json(rest);
+        // ✅ Set cookie after signup
+        res
+            .cookie("access_token", token, {
+                httpOnly: true,
+                secure: true,
+                sameSite: "None",
+            })
+            .status(201)
+            .json(rest);
 
-  } catch (error) {
-    next(error);
-  }
+    } catch (error) {
+        next(error);
+    }
 };
 
 
@@ -62,8 +62,8 @@ export const signin = async (req, res, next) => {
         const { password: pass, ...rest } = validUser._doc;
         res.cookie("access_token", token, {
             httpOnly: true,
-            secure: true,          // must be true on HTTPS (e.g., Render)
-            sameSite: 'None',
+            secure: false,
+            sameSite: 'Lax',
         }).status(200).json(rest);
 
 
@@ -92,8 +92,8 @@ export const google = async (req, res, next) => {
             const { password: pass, ...rest } = user._doc;
             res.cookie("access_token", token, {
                 httpOnly: true,
-                secure: true,          // must be true on HTTPS (e.g., Render)
-                sameSite: 'None',
+                secure: false,
+                sameSite: 'Lax',
             }).status(200).json(rest);
 
         } else {
@@ -118,8 +118,8 @@ export const google = async (req, res, next) => {
             const { password: pass, ...rest } = newUser._doc;
             res.cookie("access_token", token, {
                 httpOnly: true,
-                secure: true,          // must be true on HTTPS (e.g., Render)
-                sameSite: 'None',
+                secure: false,
+                sameSite: 'Lax',
             }).status(200).json(rest);
 
         }
