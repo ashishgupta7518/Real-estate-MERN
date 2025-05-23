@@ -19,7 +19,9 @@ export const signup = async (req, res, next) => {
 
         // ✅ Find the user again (optional, or use `newUser`)
         const user = await User.findOne({ email });
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+            expiresIn: '7d',
+        });
 
         const { password: pass, ...rest } = user._doc;
 
@@ -63,7 +65,9 @@ export const signin = async (req, res, next) => {
             return next(errorHandler(404, "Wrong Credentials"));
         }
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+            expiresIn: '7d',
+        });
 
         const { password: pass, ...rest } = validUser._doc;
         res.cookie("access_token", token, {
@@ -95,7 +99,9 @@ export const google = async (req, res, next) => {
         const user = await User.findOne({ email: req.body.email });
 
         if (user) {
-            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+                expiresIn: '7d',
+            });
             const { password: pass, ...rest } = user._doc;
             res.cookie("access_token", token, {
                 httpOnly: true,
