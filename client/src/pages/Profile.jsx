@@ -88,6 +88,7 @@ export default function Profile() {
   }
 
   const handleSubmit = async (e) => {
+    const token = localStorage.getItem('access_token'); // or from Redux
     e.preventDefault();
 
     try {
@@ -97,7 +98,7 @@ export default function Profile() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-
+          'Authorization': `Bearer ${token}`,
         },
         credentials: 'include', // ✅ this allows cookies to be sent
         body: JSON.stringify(formDatas),

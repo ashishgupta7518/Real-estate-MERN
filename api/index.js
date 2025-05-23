@@ -24,6 +24,9 @@ const app = express();
 // ✅ Apply CORS before any routes
 app.use(cors({
   origin: 'https://real-estate-mern-frontend-ckt5.onrender.com',
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+
   credentials: true,
 }));
 
