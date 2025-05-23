@@ -126,12 +126,14 @@ export default function Profile() {
 
 
   const handleDeleteuser = async () => {
+    const token = localStorage.getItem('access_token'); // or from Redux
     dispatch(deleteUserStart());
     try {
       const res = await fetch(`${BASE_URL}/api/user/delete/${currentUser._id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         credentials: 'include', // ✅ this allows cookies to be sent
       });
@@ -197,11 +199,13 @@ export default function Profile() {
 
 
   const handleShowListing = async () => {
+    const token = localStorage.getItem('access_token');
     try {
       const res = await fetch(`${BASE_URL}/api/user/listings/${currentUser._id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         credentials: 'include', // ✅ this allows cookies to be sent
       });
@@ -225,12 +229,14 @@ export default function Profile() {
 
 
   const handleListingDelete = async (e) => {
+    const token = localStorage.getItem('access_token');
     const listingId = e;
     try {
       const res = await fetch(`${BASE_URL}/api/listing/delete/${listingId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         credentials: 'include', // ✅ this allows cookies to be sent
       });
