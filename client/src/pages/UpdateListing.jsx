@@ -159,6 +159,8 @@ export default function UpdateListing() {
     }
 
     const handleSubmit = async (e) => {
+
+        const token = localStorage.getItem('access_token');
         e.preventDefault(); // Prevent default form submission
 
         if (loading) {
@@ -182,6 +184,7 @@ export default function UpdateListing() {
                 credentials: 'include', // 🔑 this sends the cookie!
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify({ ...formData, userRef: currentUser._id }),
             });

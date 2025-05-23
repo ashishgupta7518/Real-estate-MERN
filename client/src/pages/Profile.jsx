@@ -97,7 +97,6 @@ export default function Profile() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
 
         },
         credentials: 'include', // ✅ this allows cookies to be sent
