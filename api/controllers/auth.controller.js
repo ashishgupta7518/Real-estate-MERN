@@ -32,10 +32,7 @@ export const signup = async (req, res, next) => {
             })
             .status(201)
             .json(rest);
-
-
-        console.log("Generated token:", token);
-
+            
 
     } catch (error) {
         next(error);
@@ -69,10 +66,10 @@ export const signin = async (req, res, next) => {
         res.cookie("access_token", token, {
             httpOnly: true,
             secure: false,
-            sameSite: 'None',
-        }).res.status(200).json({ ...rest, token });
+            sameSite: 'Lax',
+        }).status(200).json(rest);
 
-        console.log("Generated token:", token);
+console.log("Generated token:", token);
 
 
 
@@ -100,8 +97,8 @@ export const google = async (req, res, next) => {
             res.cookie("access_token", token, {
                 httpOnly: true,
                 secure: false,
-                sameSite: 'None',
-            }).res.status(200).json({ ...rest, token });
+                sameSite: 'Lax',
+            }).status(200).json(rest);
 
         } else {
 
@@ -126,8 +123,8 @@ export const google = async (req, res, next) => {
             res.cookie("access_token", token, {
                 httpOnly: true,
                 secure: false,
-                sameSite: 'None',
-            }).res.status(200).json({ ...rest, token });
+                sameSite: 'Lax',
+            }).status(200).json(rest);
 
         }
 
