@@ -69,7 +69,7 @@ export const signin = async (req, res, next) => {
         res.cookie("access_token", token, {
             httpOnly: true,
             secure: false,
-            sameSite: 'Lax',
+            sameSite: 'None',
         }).status(200).json(rest);
 
 console.log("Generated token:", token);
@@ -100,7 +100,7 @@ export const google = async (req, res, next) => {
             res.cookie("access_token", token, {
                 httpOnly: true,
                 secure: false,
-                sameSite: 'Lax',
+                sameSite: 'None',
             }).status(200).json(rest);
 
         } else {
@@ -126,7 +126,7 @@ export const google = async (req, res, next) => {
             res.cookie("access_token", token, {
                 httpOnly: true,
                 secure: false,
-                sameSite: 'Lax',
+                sameSite: 'None',
             }).status(200).json(rest);
 
         }
