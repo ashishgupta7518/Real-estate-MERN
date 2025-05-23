@@ -7,6 +7,8 @@ export const verifyToken = (req, res, next) => {
   if (!token && req.headers.authorization?.startsWith('Bearer ')) {
     token = req.headers.authorization.split(' ')[1];
   }
+  console.log("JWT_SECRET in verifyToken:", process.env.JWT_SECRET);
+
 
   if (!token) return next(errorHandler(401, 'Unauthorized'));
 

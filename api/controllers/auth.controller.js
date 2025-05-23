@@ -33,6 +33,10 @@ export const signup = async (req, res, next) => {
             .status(201)
             .json(rest);
 
+
+            console.log("Generated token:", token);
+
+
     } catch (error) {
         next(error);
     }
@@ -68,6 +72,7 @@ export const signin = async (req, res, next) => {
             sameSite: 'Lax',
         }).status(200).json(rest);
 
+console.log("Generated token:", token);
 
 
 
