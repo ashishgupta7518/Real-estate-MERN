@@ -19,7 +19,8 @@ export const signup = async (req, res, next) => {
 
         // ✅ Find the user again (optional, or use `newUser`)
         const user = await User.findOne({ email });
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+
         const { password: pass, ...rest } = user._doc;
 
         // ✅ Set cookie after signup
@@ -58,7 +59,8 @@ export const signin = async (req, res, next) => {
             return next(errorHandler(404, "Wrong Credentials"));
         }
 
-        const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+
         const { password: pass, ...rest } = validUser._doc;
         res.cookie("access_token", token, {
             httpOnly: true,
