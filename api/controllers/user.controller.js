@@ -30,8 +30,8 @@ export const updateUser = async (req, res, next) => {
         console.log(updatedUser);
 
 
-        const { password, ...rest } = updatedUser._doc;
-        res.status(200).json(rest);
+        const { password, ...userData } = updatedUser._doc;
+        res.status(200).json(userData);
 
     } catch (error) {
         next(error);
