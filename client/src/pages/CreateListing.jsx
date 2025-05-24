@@ -13,7 +13,7 @@ export default function CreateListing() {
     const [loading, setLoading] = useState(false);
     const [viewImageUrl, setViewImageUrl] = useState(null);
     const [error, setError] = useState(false);
-    const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+
 
 
 
@@ -151,13 +151,15 @@ export default function CreateListing() {
         }
 
         try {
-            const res = await fetch(`${BASE_URL}/api/listing/create`, {
+            const res = await fetch('/api/listing/create', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                credentials: 'include', // <-- This adds credentials (cookies, HTTP auth)
-                body: JSON.stringify({ ...formData, userRef: currentUser._id }),
+                body: JSON.stringify({
+                    ...formData,
+                    userRef: currentUser._id,
+                }),
             });
 
 
