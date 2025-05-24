@@ -1,30 +1,26 @@
-import { createSlice } from '@reduxjs/toolkit'
-
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     currentUser: null,
     error: null,
-    loading: false
-
+    loading: false,
 };
-
 
 const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        signinStart: (state) => {
+        signInStart: (state) => {
             state.loading = true;
         },
-        signinSuccess: (state, action) => {
-
+        signInSuccess: (state, action) => {
             state.currentUser = action.payload;
             state.loading = false;
             state.error = null;
         },
-        signinFailure: (state, action) => {
-            state.loading = false;
+        signInFailure: (state, action) => {
             state.error = action.payload;
+            state.loading = false;
         },
         updateUserStart: (state) => {
             state.loading = true;
@@ -35,8 +31,8 @@ const userSlice = createSlice({
             state.error = null;
         },
         updateUserFailure: (state, action) => {
-            state.loading = false;
             state.error = action.payload;
+            state.loading = false;
         },
         deleteUserStart: (state) => {
             state.loading = true;
@@ -47,24 +43,37 @@ const userSlice = createSlice({
             state.error = null;
         },
         deleteUserFailure: (state, action) => {
-            state.loading = false;
             state.error = action.payload;
-        }
-        ,
-        signoutUserStart: (state) => {
+            state.loading = false;
+        },
+        signOutUserStart: (state) => {
             state.loading = true;
         },
-        signoutUserSuccess: (state) => {
+        signOutUserSuccess: (state) => {
             state.currentUser = null;
             state.loading = false;
             state.error = null;
         },
-        signoutUserFalure: (state, action) => {
-            state.loading = false;
+        signOutUserFailure: (state, action) => {
             state.error = action.payload;
+            state.loading = false;
         },
-    }
-
+    },
 });
-export const { signinStart, signinSuccess, signinFailure, updateUserStart, updateUserSuccess, updateUserFailure, deleteUser, deleteUserFailure, deleteUserStart , signoutUserFalure , signoutUserSuccess , signoutUserStart } = userSlice.actions;
+
+export const {
+    signInStart,
+    signInSuccess,
+    signInFailure,
+    updateUserFailure,
+    updateUserSuccess,
+    updateUserStart,
+    deleteUserFailure,
+    deleteUserSuccess,
+    deleteUserStart,
+    signOutUserFailure,
+    signOutUserSuccess,
+    signOutUserStart,
+} = userSlice.actions;
+
 export default userSlice.reducer;
