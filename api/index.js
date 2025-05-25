@@ -22,7 +22,7 @@ mongoose
 
 const app = express();
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: "https://real-estate-mern-3-1vlu.onrender.com",
   credentials: true,
 }));
 
