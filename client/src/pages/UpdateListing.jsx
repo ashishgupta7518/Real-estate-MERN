@@ -41,7 +41,7 @@ export default function UpdateListing() {
         const fetchListing = async () => {
             const listingId = params.listingId;
             try {
-                const res = await fetch(`/api/listing/get/${listingId}`);
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/api/listing/get/${listingId}`);
                 const data = await res.json();
                 if (data.success === false) {
                     setError(data.message);
@@ -177,7 +177,7 @@ export default function UpdateListing() {
         }
 
         try {
-            const res = await fetch(`/api/listing/update/${params.listingId}`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/listing/update/${params.listingId}`, {
                 method: 'POST',
                
                 headers: {
