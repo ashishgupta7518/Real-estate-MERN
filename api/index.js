@@ -19,10 +19,20 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
+  const allowedOrigins = [
+  'http://localhost:5173',
+  'https://real-estate-mern-3-1vlu.onrender.com',
+];
 
 const app = express();
 app.use(cors({
-  origin: "https://real-estate-mern-3-1vlu.onrender.com",
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
 }));
 
