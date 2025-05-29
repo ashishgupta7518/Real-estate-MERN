@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useRef, useState, useEffect } from 'react';
-import PopupUser from '../components/popupUser';
+import PopupUser from '../components/PopupUser';
 import {
   getDownloadURL,
   getStorage,
