@@ -19,7 +19,7 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
-  const allowedOrigins = [
+const allowedOrigins = [
   'http://localhost:5173',
   'https://real-estate-mern-3-1vlu.onrender.com',
 ];

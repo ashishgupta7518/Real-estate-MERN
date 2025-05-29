@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useRef, useState, useEffect } from 'react';
+import PopupUser from '../components/popupUser';
 import {
   getDownloadURL,
   getStorage,
@@ -18,6 +19,7 @@ import {
 } from '../redux/user/userSlice';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 export default function Profile() {
   const fileRef = useRef(null);
   const { currentUser, loading, error } = useSelector((state) => state.user);
@@ -25,10 +27,18 @@ export default function Profile() {
   const [filePerc, setFilePerc] = useState(0);
   const [fileUploadError, setFileUploadError] = useState(false);
   const [formData, setFormData] = useState({});
+  const [deletemodalConfirm, setDeleteModalConfirm] = useState(false);
+  const [signoutModalConfirm, setSignoutModalConfirm] = useState(false);
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const [showListingsError, setShowListingsError] = useState(false);
   const [userListings, setUserListings] = useState([]);
   const dispatch = useDispatch();
+  const userUpdateSuccess = () => toast.success("User updated successfully!");
+  const userUpdateError = () => toast.error("Error updating user");
+  const userdeleteSuccess = () => toast.success("User deleted successfully!");
+  const userdeleteError = () => toast.error("Error deleting user");
+
+
 
   // firebase storage
   // allow read;
@@ -85,10 +95,12 @@ export default function Profile() {
       const data = await res.json();
       if (data.success === false) {
         dispatch(updateUserFailure(data.message));
+        userUpdateError();
         return;
       }
 
       dispatch(updateUserSuccess(data));
+      userUpdateSuccess();
       setUpdateSuccess(true);
     } catch (error) {
       dispatch(updateUserFailure(error.message));
@@ -97,6 +109,7 @@ export default function Profile() {
 
   const handleDeleteUser = async () => {
     try {
+
       dispatch(deleteUserStart());
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/delete/${currentUser._id}`, {
         method: 'DELETE',
@@ -105,9 +118,11 @@ export default function Profile() {
       const data = await res.json();
       if (data.success === false) {
         dispatch(deleteUserFailure(data.message));
+        userdeleteError();
         return;
       }
       dispatch(deleteUserSuccess(data));
+      userdeleteSuccess();
     } catch (error) {
       dispatch(deleteUserFailure(error.message));
     }
@@ -165,6 +180,7 @@ export default function Profile() {
   };
   return (
     <div className='p-3 max-w-lg mx-auto'>
+      <ToastContainer />
       <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
       <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
         <input
@@ -198,7 +214,7 @@ export default function Profile() {
           placeholder='username'
           defaultValue={currentUser.username}
           id='username'
-          className='border p-3 rounded-lg'
+          className='border p-3 rounded-lg bg-gray-800 border-gray-700'
           onChange={handleChange}
         />
         <input
@@ -206,7 +222,7 @@ export default function Profile() {
           placeholder='email'
           id='email'
           defaultValue={currentUser.email}
-          className='border p-3 rounded-lg'
+          className='border p-3 rounded-lg bg-gray-800 border-gray-700'
           onChange={handleChange}
         />
         <input
@@ -214,7 +230,7 @@ export default function Profile() {
           placeholder='password'
           onChange={handleChange}
           id='password'
-          className='border p-3 rounded-lg'
+          className='border p-3 rounded-lg bg-gray-800 border-gray-700'
         />
         <button
           disabled={loading}
@@ -223,7 +239,7 @@ export default function Profile() {
           {loading ? 'Loading...' : 'Update'}
         </button>
         <Link
-          className='bg-green-700 text-white p-3 rounded-lg uppercase text-center hover:opacity-95'
+          className='bg-[#2563eb] text-white p-3 rounded-lg uppercase text-center hover:opacity-95'
           to={'/create-listing'}
         >
           Create Listing
@@ -231,20 +247,32 @@ export default function Profile() {
       </form>
       <div className='flex justify-between mt-5'>
         <span
-          onClick={handleDeleteUser}
+          onClick={() => setDeleteModalConfirm(true)}
           className='text-red-700 cursor-pointer'
         >
           Delete account
         </span>
-        <span onClick={handleSignOut} className='text-red-700 cursor-pointer'>
+        <span onClick={() => setSignoutModalConfirm(true)} className='text-red-700 cursor-pointer'>
           Sign out
         </span>
       </div>
 
-      <p className='text-red-700 mt-5'>{error ? error : ''}</p>
-      <p className='text-green-700 mt-5'>
+      {signoutModalConfirm && (
+        <PopupUser handlebtn={handleSignOut} setbtn={setSignoutModalConfirm} name="SignOut" />)}
+
+      {deletemodalConfirm && (
+        <PopupUser
+          handlebtn={handleDeleteUser}
+          setbtn={setDeleteModalConfirm}
+          name="Delete"
+        />
+
+      )}
+
+      {/* <p className='text-red-700 mt-5'>{error ? error : ''}</p> */}
+      {/* <p className='text-green-700 mt-5'>
         {updateSuccess ? 'User is updated successfully!' : ''}
-      </p>
+      </p> */}
       <button onClick={handleShowListings} className='text-green-700 w-full'>
         Show Listings
       </button>

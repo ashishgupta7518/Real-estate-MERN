@@ -11,12 +11,15 @@ import CreateListing from './pages/CreateListing.jsx'
 import UpdateListing from './pages/UpdateListing.jsx'
 import Listing from './pages/Listing.jsx'
 import Search from './pages/Search.jsx'
+import Footer from './components/Footer.jsx'
 
 export default function App() {
   return (
     <BrowserRouter>
       <Header />
+
       <Routes>
+
         <Route path="/" element={<Home />} />
         <Route path="/sign-in" element={<Signin />} />
         <Route path="/sign-up" element={<SignUp />} />
@@ -33,6 +36,7 @@ export default function App() {
 
 
       </Routes>
+      <Footer />
     </BrowserRouter>
   )
 }

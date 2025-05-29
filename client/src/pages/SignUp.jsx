@@ -41,33 +41,37 @@ export default function SignUp() {
   };
   return (
     <div className='p-3 max-w-lg mx-auto'>
-      <h1 className='text-3xl text-center font-semibold my-7'>Sign Up</h1>
+
+      <div className='flex justify-center items-center gap-2'><img src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="" /><h1 className='text-3xl text-center font-semibold my-7'>Sign In</h1> <img src="" alt="" />
+
+      </div>
+      
       <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
         <input
           type='text'
           placeholder='username'
-          className='border p-3 rounded-lg'
+          className='border p-3 rounded-lg bg-gray-800'
           id='username'
           onChange={handleChange}
         />
         <input
           type='email'
           placeholder='email'
-          className='border p-3 rounded-lg'
+          className='border p-3 rounded-lg bg-gray-800'
           id='email'
           onChange={handleChange}
         />
         <input
           type='password'
           placeholder='password'
-          className='border p-3 rounded-lg'
+          className='border p-3 rounded-lg bg-gray-800'
           id='password'
           onChange={handleChange}
         />
 
         <button
           disabled={loading}
-          className='bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80'
+          className='bg-[#2563eb] text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80'
         >
           {loading ? 'Loading...' : 'Sign Up'}
         </button>
