@@ -13,7 +13,7 @@ export default {
     require('daisyui'), // ✅ Add daisyUI plugin
   ],
   daisyui: {
-    themes: [""], // ✅ Enable "forest" theme
+    themes: ["forest"], // ✅ Enable "forest" theme
   },
 }
 
